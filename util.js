@@ -38,5 +38,5 @@ export function getDate(ntry) {
 // TODO tests
 export function stripCommasAndSpaces(text) {
   // https://blog.abelotech.com/posts/split-string-into-tokens-javascript/
-  return text.replace(',', ' ').match(/\S+/g).join(' ');
+  return text.replace(/,/g, ' ').match(/\S+/g).join(' ');
 }
