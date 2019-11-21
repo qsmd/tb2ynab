@@ -1,0 +1,29 @@
+{
+  "name": "tb2ynab",
+  "version": "1.0.0",
+  "description": "YNAB converter for Tatra banka",
+  "main": "tb2ynab.js",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qsmd/tb2ynab.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/qsmd/tb2ynab/issues"
+  },
+  "homepage": "https://qsmd.github.io/tb2ynab"
+}
