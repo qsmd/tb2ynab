@@ -19,6 +19,11 @@
     }
     a:link, a:visited { color: #0080ec; }
 </style>
+
+<!-- TODO Find better way for handling new version of JS modules. For now prevent caching. -->
+<link rel="modulepreload" href="util.js">
+<link rel="modulepreload" href="cam053sk.js">
+
 <script type="module" src="tb2ynab.js"></script>
 <body>
     <a href="https://github.com/qsmd/tb2ynab" class="github-corner" aria-label="View source on Github">
