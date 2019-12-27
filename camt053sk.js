@@ -14,8 +14,8 @@ function getDebitPayee(ntry) {
   if (!rltdpties) { return 'Bankove poplatky'; }
 
   let node = getElement('TradgPty/Nm', rltdpties);
-  if (!node) { node = getElement('CdtrAcct/Id/IBAN', rltdpties); }
   if (!node) { node = getElement('Cdtr/Nm', rltdpties); }
+  if (!node) { node = getElement('CdtrAcct/Id/IBAN', rltdpties); }
   return stripCommasAndSpaces(node.textContent);
 }
 
@@ -49,6 +49,7 @@ function getCreditMemo(ntry) {
 }
 
 function getEntry(ntry) {
+  console.log('### getEntry');
   const isDebit = findElement(ntry, 'CdtDbtInd') === 'DBIT';
   const amount = findElement(ntry, 'Amt');
   return new Ntry(
