@@ -13,10 +13,13 @@ function getDebitPayee(ntry) {
   const rltdpties = getElement('NtryDtls/TxDtls/RltdPties', ntry);
   if (!rltdpties) { return 'Bankove poplatky'; }
 
-  let node = getElement('TradgPty/Nm', rltdpties);
-  if (!node) { node = getElement('Cdtr/Nm', rltdpties); }
-  if (!node) { node = getElement('CdtrAcct/Id/IBAN', rltdpties); }
-  return stripCommasAndSpaces(node.textContent);
+  let nameNode = getElement('TradgPty/Nm', rltdpties);
+  if (!nameNode) { nameNode = getElement('Cdtr/Nm', rltdpties); }
+  const name = nameNode ? stripCommasAndSpaces(nameNode.textContent) : '';
+  const ibanNode = getElement('CdtrAcct/Id/IBAN', rltdpties);
+  const iban = ibanNode ? stripCommasAndSpaces(ibanNode.textContent) : '';
+  const divider = (nameNode && ibanNode) ? ' ' : '';
+  return `${name}${divider}${iban}`;
 }
 
 function getDebitMemo(ntry) {
