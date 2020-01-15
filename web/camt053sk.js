@@ -52,7 +52,6 @@ function getCreditMemo(ntry) {
 }
 
 function getEntry(ntry) {
-  console.log('### getEntry');
   const isDebit = findElement(ntry, 'CdtDbtInd') === 'DBIT';
   const amount = findElement(ntry, 'Amt');
   return new Ntry(
