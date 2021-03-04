@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "YNAB converter for Tatra banka",
   "main": "tb2ynab.js",
-  "dependencies": {},
   "devDependencies": {
     "eslint": "^6.6.0",
     "eslint-config-airbnb-base": "^14.0.0",
