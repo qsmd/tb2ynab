@@ -20,7 +20,7 @@ function getDebitPayee(ntry) {
   const ibanNode = getElement('CdtrAcct/Id/IBAN', rltdpties);
   const iban = ibanNode ? stripCommasAndSpaces(ibanNode.textContent) : '';
   const divider1 = (nameNode && ibanNode) ? ' ' : '';
-  const adrLine = adrLineNode ? adrLineNode.textContent : '';
+  const adrLine = adrLineNode ? stripCommasAndSpaces(adrLineNode.textContent) : '';
   const divider2 = adrLineNode ? ' ' : '';
   return `${name}${divider1}${iban}${divider2}${adrLine}`;
 }
@@ -45,9 +45,9 @@ function getCreditMemo(ntry) {
 
   const node = getElement('TradgPty/Nm', rltdpties);
   if (!node) {
-    const nm = getElement('Dbtr/Nm', rltdpties).textContent;
+    const nm = getElement('Dbtr/Nm', rltdpties);
     const nodeIban = getElement('DbtrAcct/Id/IBAN', rltdpties);
-    const memo = `${nm} ${nodeIban ? nodeIban.textContent : ''}`;
+    const memo = `${nm ? nm.textContent : ''} ${nodeIban ? nodeIban.textContent : ''}`;
     return stripCommasAndSpaces(memo);
   }
 
