@@ -3,6 +3,7 @@
 
 // https://medium.com/@mattlag/es6-modules-getting-started-gotchas-2ad154f38e2e
 import { xml2csv } from './camt053sk.js';
+import { csv2csv } from './csv.js';
 
 // FIXME poor man's error handling
 function error(text) {
@@ -10,14 +11,25 @@ function error(text) {
   console.error(text);
 }
 
-function parse(xmlText, fileName) {
-  const csv = xml2csv(xmlText);
+function parse(text, file) {
+  let fileName;
+  let csv;
+  if (file.type == "text/xml") {
+    fileName = file.name.replace('.xml', '.ynab.csv');
+    csv = xml2csv(text)
+  } else if (file.type == "text/csv") {
+    fileName = file.name.replace('.csv', '.ynab.csv');
+    csv = csv2csv(text);
+  } else {
+    error('Incorrect file type');
+    return;
+  }
 
   // https://code-maven.com/create-and-download-csv-with-javascript
   const hiddenElement = document.createElement('a');
   hiddenElement.href = `data:text/csv;charset=utf-8,${encodeURI(csv)}`;
   hiddenElement.target = '_blank';
-  hiddenElement.download = fileName.replace('.xml', '.csv');
+  hiddenElement.download = fileName;
   hiddenElement.click();
 }
 
@@ -27,12 +39,15 @@ function fileListener() {
   if (allFiles.length === 0) { error('No file selected'); return; }
 
   const file = allFiles[0];
-  if (file.type !== 'text/xml') { error('Incorrect file type'); return; }
+  if (file.type !== 'text/xml' && file.type !== 'text/csv' ) {
+    error('Incorrect file type');
+    return;
+  }
   if (file.size > 2 * 1024 * 1024) { error('Exceeded size 2MB'); return; }
 
   const reader = new FileReader();
   reader.addEventListener('load', (e) => {
-    parse(e.target.result, file.name);
+    parse(e.target.result, file);
   });
   reader.addEventListener('error', () => { error('Failed to read file'); });
   reader.readAsText(file);
