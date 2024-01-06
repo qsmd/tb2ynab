@@ -22,13 +22,15 @@ export function csv2csv(inputCSV) {
           payee = getPayee(infoColumnParts);
         } else {
           payee = parts[8];
-          memo = parts[13] + " | " + parts[12];
+          memo = [parts[13], parts[12]].join(' ');
+          if (isNullOrWhitespace(memo)) {
+            memo = parts[14];
+          }
         }
-
         row.push(parts[1]);
         row.push(stripCommasAndSpaces(payee));
         row.push(stripCommasAndSpaces(memo));
-        row.push(parts[2].replace(/,/g, '.'));
+        row.push(getSign(parts[4]) + parts[2].replace(/,/g, '.'));
       }
       
       return row;
@@ -37,6 +39,10 @@ export function csv2csv(inputCSV) {
   // Convert the processed lines back to a CSV string
   const processedCSV = processedLines.map(row => row.join(',')).join('\n');
   return 'Date,Payee,Memo,Amount\n' + processedCSV;
+}
+
+function getSign(operationType) {
+  return operationType === "Debet" ? '-' : '';
 }
 
 function getCard(parts) {
@@ -49,7 +55,7 @@ function getCard(parts) {
 function getPayee(parts) {
   const payee = []
   for (let i = parts.length - 1; i >= 0; i--) {
-    if (isAmountWithCurrency(parts[i]) || isTime(parts[i])) {
+    if (isAmountWithCurrency(parts[i]) || isTime(parts[i]) || isDate(parts[i])) {
       return payee.join(' ');
     }
     payee.unshift(parts[i]);
@@ -71,6 +77,28 @@ function isAmountWithCurrency(str) {
 function isTime(str) {
     const regex = /^(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d$/;
     return regex.test(str);
+}
+
+function isDate(str) {
+    // Check if the string length is 8 and all characters are digits
+    if (str.length !== 8 || !/^\d+$/.test(str)) {
+        return false;
+    }
+
+    // Extract year, month, and day from the string
+    const year = parseInt(str.substring(0, 4), 10);
+    const month = parseInt(str.substring(4, 6), 10) - 1; // Month is 0-indexed in JavaScript
+    const day = parseInt(str.substring(6, 8), 10);
+
+    // Create a date object
+    const date = new Date(year, month, day);
+
+    // Check if the date is valid and components match the input
+    return date.getFullYear() === year && date.getMonth() === month && date.getDate() === day;
+}
+
+function isNullOrWhitespace(str) {
+    return str == null || str.match(/^ *$/) !== null;
 }
 
 // https://stackoverflow.com/a/8497474
